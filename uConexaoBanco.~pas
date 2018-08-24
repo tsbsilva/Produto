@@ -1,0 +1,160 @@
+unit uConexaoBanco;
+ 
+  
+ 
+interface
+ 
+  
+
+uses
+
+   inifiles, SysUtils, Forms, IBDatabase, Dialogs;
+
+  
+ 
+  
+ 
+type
+ 
+   TConexaoBanco = class
+ 
+      private
+
+       FConexaoBanco : TIBDatabase;
+ Fransaction : TIBTransaction;
+
+ 
+      public
+ 
+       constructor Create;
+ 
+       destructor  Destroy; override;
+ 
+  
+
+       function GetConexao : TIBDatabase;
+       function GetTransaction : TIBTransaction;
+ 
+       property ConexaoBanco : TIBDatabase   read GetConexao;
+       property Transaction : TIBTransaction   read GetTransaction;
+ 
+  
+ 
+   end;
+ 
+  
+ 
+  
+
+implementation
+ 
+  
+ 
+{ TConexaoBanco }
+ 
+  
+ 
+constructor TConexaoBanco.Create;
+
+var ArquivoINI, Servidor, Caminho, DriverName, UserName, PassWord : string;
+ 
+    LocalServer : Integer;
+ 
+    Configuracoes : TIniFile;
+
+begin
+ 
+   ArquivoINI := ExtractFilePath(Application.ExeName) + 'config.ini';
+
+  
+ 
+   if not FileExists(ArquivoINI) then 
+    begin
+     Showmessage('Arquivo de Config não Encontrado - Entre em contato como suporte técnico!');
+
+     Exit;
+ 
+    end;
+
+
+
+
+ 
+   Configuracoes := TIniFile.Create(ArquivoINI);
+ 
+   Try
+
+ 
+     Servidor   := Configuracoes.ReadString('Dados', 'Servidor',   Servidor);
+ 
+     Caminho    := Configuracoes.ReadString('Dados', 'DataBase',   Caminho);
+ 
+     DriverName := Configuracoes.ReadString('Dados', 'DriverName', DriverName);
+ 
+     UserName   := Configuracoes.ReadString('Dados', 'UserName',   UserName);
+ 
+     PassWord   := Configuracoes.ReadString('Dados', 'PassWord',   PassWord);
+ 
+   Finally
+ 
+     Configuracoes.Free;
+ 
+   end;
+ 
+  
+ 
+   try
+
+     FConexaoBanco := TIBDatabase.Create(Application);
+     FConexaoBanco.Params.Add('user_name=SYSDBA');    {usuário master}
+     FConexaoBanco.Params.Add('password=masterkey');  {senha do usuário master}
+     FConexaoBanco.DatabaseName:= Caminho + '\TESTE.FDB';; {endereço do banco}
+     FConexaoBanco.LoginPrompt:= false;
+
+     FConexaoBanco.Connected  := False;
+     FConexaoBanco.Connected  := True;
+     FConexaoBanco.Name := 'db';
+
+     Fransaction := TIBTransaction.Create(Application);
+     Fransaction.Name := 'ts';
+
+     Fransaction.DefaultDatabase := FConexaoBanco;
+     FConexaoBanco.DefaultTransaction := Fransaction;
+
+
+   except
+     ShowMessage('Erro ao Conectar o Banco de dados. Verifique as preferencias do sistema!');
+   end; 
+end;
+ 
+  
+
+destructor TConexaoBanco.Destroy;
+begin
+  FConexaoBanco.Free;
+  inherited;
+end;
+ 
+  
+ 
+function TConexaoBanco.GetConexao: TIBDatabase;
+
+begin
+
+   Result := FConexaoBanco;
+
+end;
+
+
+function TConexaoBanco.GetTransaction;
+begin
+
+   Result := Fransaction;
+
+end;
+
+ 
+  
+ 
+end.
+

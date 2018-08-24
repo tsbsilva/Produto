@@ -1,0 +1,60 @@
+unit unProduto;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uProdutoControle,
+  StdCtrls, uControle;
+
+type
+  TfrmProduto = class(TForm)
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+    FcontroleConexao : TControle;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProduto: TfrmProduto;
+
+implementation
+
+{$R *.DFM}
+
+uses uConexaoBanco;
+
+procedure TfrmProduto.Button1Click(Sender: TObject);
+var
+  vDateHourPSE: DateHourPSE;
+begin
+
+  vDateHourPSE := DateHourPSE.Create(nil);
+
+  vDateHourPSE.Codigo := Edit1.Text;
+  vDateHourPSE.Descricao := Edit2.Text;
+
+  vDateHourPSE.InsereCliente;
+
+end;
+
+procedure TfrmProduto.FormCreate(Sender: TObject);
+var  vConexao: TConexaoBanco;
+begin
+//  vConexao := TConexaoBanco.Create;
+FcontroleConexao := TControle.Create;
+
+end;
+
+procedure TfrmProduto.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FcontroleConexao.Free;
+end;
+
+end.

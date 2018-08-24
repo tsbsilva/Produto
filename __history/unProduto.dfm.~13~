@@ -1,0 +1,240 @@
+object frmProduto: TfrmProduto
+  Left = 191
+  Top = 124
+  Caption = 'Cadastro de Produtos'
+  ClientHeight = 421
+  ClientWidth = 659
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyUp = FormKeyUp
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 72
+    Top = 32
+    Width = 33
+    Height = 13
+    Caption = 'C'#243'digo'
+  end
+  object Label2: TLabel
+    Left = 72
+    Top = 56
+    Width = 48
+    Height = 13
+    Caption = 'Descri'#231#227'o'
+  end
+  object edtCodigo: TEdit
+    Left = 126
+    Top = 26
+    Width = 121
+    Height = 21
+    CharCase = ecUpperCase
+    TabOrder = 0
+    Text = 'EDTCODIGO'
+    OnExit = edtCodigoExit
+  end
+  object edtDescricao: TEdit
+    Left = 126
+    Top = 53
+    Width = 395
+    Height = 21
+    CharCase = ecUpperCase
+    TabOrder = 1
+    Text = 'EDTDESCRICAO'
+  end
+  object Button1: TButton
+    Left = 540
+    Top = 13
+    Width = 75
+    Height = 25
+    Caption = 'Incluir'
+    TabOrder = 2
+    OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 540
+    Top = 44
+    Width = 75
+    Height = 25
+    Caption = 'Alterar'
+    TabOrder = 3
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 540
+    Top = 75
+    Width = 75
+    Height = 25
+    Caption = 'Excluir'
+    TabOrder = 4
+    OnClick = Button3Click
+  end
+  object DBGrid1: TDBGrid
+    Left = 72
+    Top = 106
+    Width = 543
+    Height = 281
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 5
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnCellClick = DBGrid1CellClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'codigo'
+        Title.Caption = 'C'#243'digo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'descricao'
+        Title.Caption = 'Descri'#231#227'o'
+        Width = 433
+        Visible = True
+      end>
+  end
+  object Button4: TButton
+    Left = 253
+    Top = 22
+    Width = 75
+    Height = 25
+    Caption = 'Novo C'#243'digo'
+    TabOrder = 6
+    OnClick = Button4Click
+  end
+  object frxReport1: TfrxReport
+    Version = '5.1.5'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 43334.943623263890000000
+    ReportOptions.LastChange = 43334.943623263890000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      ''
+      'begin'
+      ''
+      'end.')
+    Left = 512
+    Top = 288
+    Datasets = <>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 210.000000000000000000
+      PaperHeight = 297.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      object ReportTitle1: TfrxReportTitle
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Memo2: TfrxMemoView
+          Align = baCenter
+          Left = 185.196970000000000000
+          Width = 347.716760000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Memo.UTF8W = (
+            'RELAT'#211'RIO DE PRODUTOS')
+          ParentFont = False
+        end
+        object Memo5: TfrxMemoView
+          Left = 132.283550000000000000
+          Top = 15.118120000000010000
+          Width = 162.519790000000000000
+          Height = 52.913420000000000000
+        end
+      end
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 102.047310000000000000
+        Width = 718.110700000000000000
+        RowCount = 0
+        object Rich1: TfrxRichView
+          Left = 15.118120000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          DataField = 'codigo'
+          GapX = 2.000000000000000000
+          GapY = 1.000000000000000000
+          RichEdit = {
+            7B5C727466315C616E73695C616E7369637067313235325C64656666305C6E6F
+            7569636F6D7061745C6465666C616E67313034367B5C666F6E7474626C7B5C66
+            305C666E696C5C666368617273657430205461686F6D613B7D7D0D0A7B5C2A5C
+            67656E657261746F7220526963686564323020362E332E393630307D5C766965
+            776B696E64345C756331200D0A5C706172645C66305C667331365C7061720D0A
+            7D0D0A00}
+        end
+      end
+      object PageFooter1: TfrxPageFooter
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 185.196970000000000000
+        Width = 718.110700000000000000
+        object Memo1: TfrxMemoView
+          Left = 642.520100000000000000
+          Width = 75.590600000000000000
+          Height = 18.897650000000000000
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[Page#]')
+        end
+      end
+      object Memo3: TfrxMemoView
+        Left = 15.118120000000000000
+        Top = 52.913420000000000000
+        Width = 90.708720000000000000
+        Height = 18.897650000000000000
+        Memo.UTF8W = (
+          'C'#243'digo')
+      end
+      object Memo6: TfrxMemoView
+        Left = 128.504020000000000000
+        Top = 60.472480000000000000
+        Width = 83.149660000000010000
+        Height = 26.456710000000000000
+      end
+    end
+  end
+  object frxDBDataset1: TfrxDBDataset
+    UserName = 'frxDBDataset1'
+    CloseDataSource = False
+    DataSource = DataSource1
+    BCDToCurrency = False
+    Left = 424
+    Top = 256
+  end
+  object DataSource1: TDataSource
+    Left = 344
+    Top = 176
+  end
+end

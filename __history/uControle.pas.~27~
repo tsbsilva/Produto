@@ -1,0 +1,49 @@
+unit uControle;
+
+interface
+
+uses
+   Windows, Messages, SysUtils, Classes,  Controls, Forms, Dialogs,
+   Variants, Contnrs,  DBXFirebird, SqlExpr,  StrUtils, inifiles,
+   uConexaoBanco, Data.DB, Datasnap.Provider, Datasnap.DBClient;
+type
+  TControle = class
+    private
+      FConexao  : TConexaoBanco;
+      FSQL : TSQLQuery;
+      FDataSource: TDataSource;
+      FClientDataSet: TClientDataSet;
+      FProvider: TDataSetProvider;
+    public
+     constructor Create;
+     destructor  Destroy; override;
+     property SQL : TSQLQuery read FSQL write FSQL;
+     property DATASOURCE : TDataSource read FDataSource write FDataSource;
+     property ClientDataSet : TClientDataSet read FClientDataSet write FClientDataSet;
+     property Provider : TDataSetProvider read FProvider write FProvider;
+  end;
+
+implementation
+
+{ TControle }
+constructor TControle.Create;
+begin
+  FConexao  := TConexaoBanco.Create;
+  FSQL := TSQLQuery.Create(Application);
+  FSQL.SQLConnection := FConexao.ConexaoBanco;
+  FDataSource := TDataSource.Create(Application);
+  FProvider := TDataSetProvider.Create(Application);
+  FClientDataSet := TClientDataSet.Create(Application);
+  Fcontrole.ClientDataSet.Close;
+ Fcontrole.ClientDataSet.FieldDefs.Clear;
+ Fcontrole.ClientDataSet.FieldDefs.add('CODIGO',ftInteger);
+ Fcontrole.ClientDataSet.FieldDefs.add('descricao',ftString,100);
+ Fcontrole.ClientDataSet.CreateDataSet;
+end;
+
+destructor TControle.Destroy;
+begin
+  inherited;
+end;
+
+end.

@@ -1,0 +1,142 @@
+unit unProduto;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uProdutoControle,
+  StdCtrls, uControle, Vcl.Grids, Vcl.DBGrids, Data.DB,
+  Data.FMTBcd;
+
+type
+  TfrmProduto = class(TForm)
+    edtCodigo: TEdit;
+    edtDescricao: TEdit;
+    Button1: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Button2: TButton;
+    Button3: TButton;
+    DBGrid1: TDBGrid;
+    DataSource1: TDataSource;
+    procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtCodigoExit(Sender: TObject);
+  private
+    { Private declarations }
+    FcontroleConexao : TControle;
+    FProdutoControle: TProdutoControle;
+    procedure LimparCampos;
+    procedure CarregaParametros;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProduto: TfrmProduto;
+
+implementation
+
+{$R *.DFM}
+
+uses uConexaoBanco;
+
+procedure TfrmProduto.Button1Click(Sender: TObject);
+begin
+  if FProdutoControle.JaCadastrado then
+  begin
+    Showmessage('Produto já cadastrado');
+    Exit;
+  end;
+
+  edtCodigo.text := FProdutoControle.GetNewCodigoProduto;
+  CarregaParametros;
+  FProdutoControle.InsereProduto;
+  FProdutoControle.PesquisaProduto;
+  edtCodigo.clear;
+  edtDescricao.clear;
+end;
+
+procedure TfrmProduto.FormCreate(Sender: TObject);
+var  vConexao: TConexaoBanco;
+begin
+  FcontroleConexao := TControle.Create;
+  FProdutoControle := TProdutoControle.Create(FcontroleConexao);
+
+end;
+             procedure TfrmProduto.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  edtCodigo.text := FcontroleConexao.ClientDataSet.Fieldbyname('codigo').asstring;
+  edtDescricao.text := FcontroleConexao.ClientDataSet.Fieldbyname('descricao').asstring;
+end;
+
+procedure TfrmProduto.FormShow(Sender: TObject);
+begin
+  LimparCampos;
+  FcontroleConexao := FProdutoControle.PesquisaProduto;
+  DBGrid1.DataSource := FcontroleConexao.DATASOURCE;
+end;
+
+procedure TfrmProduto.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FcontroleConexao.Free;
+  FProdutoControle.Free;
+end;
+
+procedure TfrmProduto.LimparCampos;
+begin
+  edtDescricao.clear;
+  edtCodigo.clear;
+  edtCodigo.setfocus;
+end;
+
+ procedure TfrmProduto.Button2Click(Sender: TObject);
+begin
+  CarregaParametros;
+  FProdutoControle.AlteraProduto;
+  FProdutoControle.PesquisaProduto;
+  edtCodigo.clear;
+  edtDescricao.clear;
+end;
+
+procedure TfrmProduto.Button3Click(Sender: TObject);
+begin
+ CarregaParametros;
+ FProdutoControle.ExcluirProduto;
+ FProdutoControle.PesquisaProduto;
+ edtCodigo.clear;
+ edtDescricao.clear;
+end;
+
+procedure TfrmProduto.CarregaParametros;
+begin
+  FProdutoControle.Codigo := edtCodigo.Text;
+  FProdutoControle.Descricao := edtDescricao.Text;
+end;
+
+procedure TfrmProduto.DBGrid1CellClick(Column: TColumn);
+begin
+  edtCodigo.text := FcontroleConexao.ClientDataSet.Fieldbyname('codigo').asstring;
+  edtDescricao.text := FcontroleConexao.ClientDataSet.Fieldbyname('descricao').asstring;
+end;
+
+procedure TfrmProduto.edtCodigoExit(Sender: TObject);
+begin
+ try
+   if edtCodigo.text <> '' then
+   begin
+    StrToint(edtCodigo.Text)
+   end;
+ except
+   showmessage('código inválido');
+   edtCodigo.SetFocus;
+ end;
+end;
+
+end.

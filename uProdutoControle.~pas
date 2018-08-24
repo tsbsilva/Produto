@@ -1,0 +1,238 @@
+unit uProdutoControle;
+ 
+interface
+ 
+uses
+ 
+Windows, SysUtils, Classes, Controls, Forms, ComCtrls, uControle;
+ 
+type
+ 
+DateHourPSE = class
+ 
+private
+ 
+FCodigo : String;
+ 
+FDescricao : String;
+ 
+ 
+Fcontrole :TControle;
+ 
+public
+ 
+  
+ 
+constructor Create(pConexaoControle:TControle);
+ 
+destructor Destroy; override;
+ 
+//
+ 
+function InsereCliente : Boolean;
+ 
+function AlteraCliente : Boolean;
+ 
+function ExcluirCliente : Boolean;
+ 
+function PesquisaCliente (pCodigo:string):DateHourPSE;
+ 
+//
+
+
+property Codigo : String read FCodigo write FCodigo;
+ 
+property Descricao : String read FDescricao write FDescricao;
+
+
+ 
+  
+ 
+end;
+ 
+  
+ 
+implementation
+ 
+{ DateHourPSE }
+ 
+function DateHourPSE.AlteraCliente: Boolean;
+ 
+begin
+ 
+FControle.sqqGeral.Close;
+ 
+FControle.sqqGeral.SQL.Clear;
+ 
+FControle.sqqGeral.SQL.Add(' UPDATE produto ');
+ 
+FControle.sqqGeral.SQL.Add(' SET descricao = :descricao ');
+FControle.sqqGeral.SQL.Add(' where codigo = :codigo ');
+ 
+
+
+FControle.sqqGeral.ParamByName('vodigo').AsString := Self.Codigo;
+
+FControle.sqqGeral.ParamByName('descricao').AsString := Self.Descricao;
+
+
+ 
+//
+ 
+try
+ 
+FControle.sqqGeral.ExecQuery;
+ 
+Result := True;
+ 
+except
+ 
+Result := False;
+ 
+end;
+ 
+end;
+ 
+  
+ 
+constructor DateHourPSE.Create(pConexaoControle:TControle);
+ 
+begin
+ 
+Fcontrole := pConexaoControle;
+ 
+end;
+ 
+  
+ 
+destructor DateHourPSE.Destroy;
+ 
+begin
+ 
+  
+ 
+inherited;
+ 
+end;
+ 
+  
+ 
+function DateHourPSE.ExcluirCliente: Boolean;
+ 
+begin
+ 
+Fcontrole.SqqGeral.Close;
+ 
+FControle.sqqGeral.SQL.Clear;
+ 
+FControle.sqqGeral.SQL.Add(' DELETE FROM TBL_CLIENTES C ');
+
+FControle.sqqGeral.SQL.Add(' WHERE C.CLI_ID = :vCLI_ID ');
+ 
+FControle.sqqGeral.ParamByName('vCLI_ID').AsString := Self.Codigo;
+ 
+  
+ 
+try
+ 
+FControle.sqqGeral.ExecQuery;
+ 
+Result := True;
+ 
+except
+ 
+Result := False;
+ 
+end
+ 
+end;
+ 
+  
+ 
+function DateHourPSE.InsereCliente: Boolean;
+ 
+begin
+ 
+FControle.sqqGeral.Close;
+ 
+FControle.sqqGeral.SQL.Clear;
+ 
+FControle.sqqGeral.SQL.Add(' INSERT INTO PRODUTO ');
+ 
+FControle.sqqGeral.SQL.Add(' (CODIGO, ');
+ 
+FControle.sqqGeral.SQL.Add(' DESCRICAO) ');
+
+
+ 
+FControle.sqqGeral.SQL.Add(' VALUES (' + Self.Codigo + ',');
+
+FControle.sqqGeral.SQL.Add(''''+ Self.Descricao +''')');
+
+//FControle.sqqGeral.ParamByName('CODIGO').AsString := Self.Codigo;
+//ontrole.sqqGeral.ParamByName('DESCRICAO').AsString := Self.Descricao;
+ 
+
+
+
+ 
+try
+
+FControle.sqqGeral.ExecQuery;
+
+Result := True;
+ 
+except
+
+Result := False;
+
+end;
+ 
+end;
+ 
+  
+ 
+function DateHourPSE.PesquisaCliente(pCodigo: string): DateHourPSE;
+ 
+begin
+ 
+FControle.sqqGeral.Close;
+ 
+FControle.sqqGeral.SQL.Clear;
+ 
+FControle.sqqGeral.SQL.Add(' SELECT codigo, ');
+ 
+FControle.sqqGeral.SQL.Add(' descricao ');
+
+
+FControle.sqqGeral.SQL.Add(' FROM produto ');
+
+FControle.sqqGeral.SQL.Add(' WHERE codigo = '+ pCodigo );
+ 
+FControle.sqqGeral.ExecQuery;
+ 
+  
+ 
+if FControle.sqqGeral.RecordCount <= 0 then
+ 
+begin
+ 
+Self.Codigo := '';
+ 
+end
+ 
+else
+ 
+begin
+ 
+Self.Codigo := FControle.sqqGeral.ParamByName('vCLI_ID').AsString ;
+ 
+Self.FDescricao := FControle.sqqGeral.ParamByName('vCLI_NOME').AsString ;
+ 
+
+ 
+end;
+ 
+end;
+ 
+end.
